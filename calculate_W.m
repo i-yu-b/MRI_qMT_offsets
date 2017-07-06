@@ -1,25 +1,26 @@
-function W = calculate_W(delta,T2r,lineshape)
-% calculate saturation rate
+function W = calculate_W(delta,T2r,lineshape, pulse)
+% calculate mean saturation rate
+% input:
+%   delta - linear frequency offset of RF pulse, Hz (scalar value/vector)
+%   T2 - relaxation time of restiricted pool in s (scalar value)
+%   lineshape - assumed lineshape of restricted pool
+%   pulse - data structure describing MT pulse
+% output: 
+%   W - mean saturation rate for given parameters
+G = 0;
 switch lineshape
     case 'gaussian'
-        W = gaussian(delta, T2r);
+        G = gaussian(delta, T2r);
     case 'lorentzian'
-        W = lorentzian(delta, T2r);
+        G = lorentzian(delta, T2r);
     case 'superlorentzian'
-        W = superlorentzian(delta, T2r);
+        G = superlorentzian(delta, T2r);
     case 'superlorentzian_res'
-        W = superlorentzian_res(delta, T2r);
+        G = superlorentzian_res(delta, T2r);
 end
 
+
 end
-
-
-function W = computeW(G, Pulse)
-% Compute Mean saturation rate <W(delta,alpha)> for given G(delta)
-% ----------------------------------------------------------------------------------------------------
-% Written by: Jean-Fran?ois Cabana, 2016
-% ----------------------------------------------------------------------------------------------------
-
 
 W = zeros(length(Pulse),1);
 

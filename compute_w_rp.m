@@ -1,12 +1,18 @@
-function w_rp = compute_w_rp(TR, pulse)
-% Approximate MT pulse using Sled and Pike RP approach
-% w_rp function computes cw pulse of pulse duration equals to 
-% full-width-at-half-maximum of the shaped MT pulse in pulse sequence of
-% duration equals to t_mt
+function w_rp = compute_w_rp(pulse)
+%{
+w_rp = compute_w_rp(pulse) function computes mean omega1 value of shaped 
+MT pulse using Sled and Pike RP approach: MT shaped pulse of duration t_mt 
+approximated by cw rectangular pulse of duration equals to 
+full-width-at-half-maximum of the shaped MT pulse and equivalent average 
+power
 
-% input: TR - repetition time, pulse - set of pulse parameters
-% output: averaged omega1 value
+input:
+    pulse - data structure containig all MT pulse properties
+output:
+    w_rp - averaged omega1 value
+%}
 
+TR = pulse.TR;
 t_mt = pulse.t_mt;
 omega1 = pulse.omega1;
 integral_value = integral(omega1.^2, 0, t_mt);

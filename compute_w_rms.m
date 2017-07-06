@@ -1,10 +1,15 @@
 function w_rms = compute_w_rms(pulse)
-% Approximate MT pulse using Yarnykh and Yuan?s model, replacing MT shaped
-% pulse with rectangular pulse of the same duration and equivalent 
-% average power
+%{
+w_rms = compute_w_rms(pulse) function computes mean omega1 value of shaped 
+MT pulse using Yarnykh and Yuan model: MT shaped pulse of duration t_mt 
+approximated by cw rectangular pulse of the same duration and equivalent 
+average power
 
-% input: pulse - set of pulse parameters
-% output: averaged omega1 value
+input:
+    pulse - data structure containig all MT pulse properties
+output:
+    w_rms - averaged omega1 value
+%}
 
 t_mt = pulse.t_mt;
 omega1 = pulse.omega1;
