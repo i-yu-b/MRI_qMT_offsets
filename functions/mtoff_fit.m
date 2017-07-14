@@ -1,5 +1,5 @@
-function Mz = mtoff_fit(parameters,offsets,pulse,omega1_method, ...
-                        Mz_method,lineshape)
+function Mzf = mtoff_fit(parameters,offsets,pulse,omega1_method, ...
+                        Mz_method,lineshape,sig)
 %{
 function Mz = mtoff_fit(parameters,constants) solves 2-compartment
 bloch equations in the presence of off-resonance saturation pulses 
@@ -23,13 +23,13 @@ input:
     omega1_method - function handle for function calculating mean omega1
                     values for different MT pulse approximations
                     currently available: 
-                @compute_w_cw - Sled and Pike continious wave model 
+                    @compute_omega1_cw - Sled and Pike continious wave                                         
                         (Sled JG, Pike GB. 2001. Magn Reson Med 46:923-931)
 
-                @compute_w_rp - Sled and Pike rectangular pulse model
+                    @compute_omega1_rp - Sled and Pike rectangular pulse                                        
                         (Sled JG, Pike GB. 2001. Magn Reson Med 46:923-931)
 
-                @compute_w_rms - Yarnykh and Yuan rectangular pulse model
+                   @compute_omega1_rms - Yarnykh and Yuan rectangular pulse 
                           (Yarnykh VL, Yuan C. 2004. Neuroimage 23:409-424)
     
     Mz_method - function handle for function calculating Mz value for 
@@ -43,6 +43,9 @@ input:
 
                   @SPGR_ramani - Ramani solution for MT off-res saturation
                   (Ramani A, et al. 2002. Magn Reson Imaging 20:721-731)
+                  
+                  @SPGR_yarnykh - Yarnykh solution for MT off-res saturation
+                  (Yarnykh VL, Yuan C. 2004. Neuroimage)
                         
     lineshape - function handle for function calculating lineshape of
                 macromolecular pool. 
@@ -57,10 +60,15 @@ input:
 
 % calculate integral under macromolecular pool spectrum
 T2m = parameters(3); %T2 relaxation time of macromolecular pool
+
 G = lineshape(offsets, T2m);
 
+% calculate averaged omega1 value
+omega1_aver = omega1_method(pulse);
 % calculate mean saturation rate of macromolecular pool
-W = G * pi * omega1_method(pulse).^2;
+W = G .* pi .* omega1_aver.^2;
 
-Mzf =  Mz_method(parameters, W, offsets, omega1_approx);
+Mzf =  Mz_method(parameters, W, offsets, omega1_aver);
+semilogx(offsets, sig, '-o',offsets, Mzf,'-k');
+drawnow
 

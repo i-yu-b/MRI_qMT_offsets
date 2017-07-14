@@ -12,9 +12,7 @@ if isempty(find(y<0.5))
     y = (y-min(y))/ (max(y)-min(y));
 end
 
-n = length(y);
-plot(x, y, '-ok');
-hold on;
+% n = length(y);
 
 % find indexs of left and right points corresponding to half-maximum.
 indexes = find(diff(sign(y-0.5))~=0,2,'first');
@@ -44,6 +42,8 @@ end
 
 fwhm_value = x_right - x_left;
 
-plot([x_left, x_right], [0.5,0.5],'-r');
+% plot(x, y, '-ok');
+% hold on;
+% plot([x_left, x_right], [0.5,0.5],'-r');
 
 end
